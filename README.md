@@ -2,4 +2,8 @@
 
 All of these scripts are recode by Me
 
-Thanks to scripts Owner (obviously me)
+# Update Logs
+
+
+## V4 Update
+• Adding auto filter from items
