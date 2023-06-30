@@ -4,8 +4,7 @@ geiger_worlds = {"" , "" }         -- Worlds for geiger (Please use clear world)
 
 storage_world = {"WORLD|ID"}  -- always put id
 
-drop_location_X = 0
-drop_location_Y = 0
+drop_fg_id = 1442           -- ID for drop tiles
 
 warp_interval   = 8000                      -- Warp Interval (recommend 4000-5000)
 afk_on_main     = true                      -- Is AFK on Main Enabled
@@ -18,7 +17,6 @@ whMsData = ""                        -- For Editable webhook (so webhook dont sp
 
 -- TRASH SETTING
 trash_enable   = false                       -- Is auto trash enabled
-trash_webhook  = false                       -- Is bot send webhook when trashes smth
 trash = {
     1498, 1500, 2804, 2806, 8270, 8272, 8274, 6416, 3196
 }
