@@ -227,7 +227,7 @@ function Drop(item, index)
 
     local tilesDrop_table = {}
 
-    if #tilesDrop_table < 0 then
+    if #tilesDrop_table <= 0 then
         for _, tile in pairs(getBot():getWorld():getTiles()) do
             if getBot():getWorld():getTile(tile.x, tile.y).fg == drop_fg_id then
                 table.insert(tilesDrop_table, {x = tile.x, y = tile.y})
@@ -242,7 +242,7 @@ function Drop(item, index)
     local item_found = false
     for _, item_id in pairs(crystal_items) do
         if item == item_id then
-            getBot():findPath(tiles_table[1].x , tiles_table[1].y)
+            getBot():findPath(tilesDrop_table[1].x , tilesDrop_table[1].y)
             item_found = true
             break
         end
@@ -250,7 +250,7 @@ function Drop(item, index)
     if not item_found then
         for _, item_id in pairs(notbad_items) do
             if item == item_id then
-                getBot():findPath(tiles_table[2].x , tiles_table[2].y)
+                getBot():findPath(tilesDrop_table[2].x , tilesDrop_table[2].y)
                 item_found = true
                 break
             end
@@ -259,7 +259,7 @@ function Drop(item, index)
     if not item_found then
         for _, item_id in pairs(stuff_items) do
             if item == item_id then
-                getBot():findPath(tiles_table[3].x , tiles_table[3].y)
+                getBot():findPath(tilesDrop_table[3].x , tilesDrop_table[3].y)
                 item_found = true
                 break
             end
@@ -267,7 +267,7 @@ function Drop(item, index)
     end
     if not item_found then
         local random_index = math.floor(math.random(4, 5))
-        getBot():findPath(tiles_table[random_index].x, tiles_table[random_index].y)
+        getBot():findPath(tilesDrop_table[random_index].x, tilesDrop_table[random_index].y)
     end
 
     sleep(5000)
