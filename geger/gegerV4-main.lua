@@ -45,38 +45,6 @@ function SecondTT(seconds)
   end
 end
 
-
-function webHookEmbed(whMsID, desc)
-    if not webhook_enable then return end
-    local script = [[
-        $webHookUrl = "]]..whURL.."/messages/"..whMsID..[["
-        [System.Collections.ArrayList]$embedArray = @()
-        $color = Get-Random -Minimum 0 -Maximum 16777215
-        $description = ']]..desc..[['
-        $imageObject = [PSCustomObject]@{
-            url = "https://ik.imagekit.io/izdevs/dc/Vanilla-1.9s-281px.gif?updatedAt=1687602728562"
-            }
-        $embedObject = [PSCustomObject]@{
-            color = $color
-            description = $description
-            thumbnail = $imageObject
-            footer      = [PSCustomObject]@{
-                text    = ']].."Last Update : "..os.date("%H:%M:%S").."\n"..[[IzzDevs'
-                icon_url = "https://ik.imagekit.io/izdevs/izuye.png"
-            }
-        }
-        $embedArray.Add($embedObject)
-        $payload = [PSCustomObject]@{
-            embeds = $embedArray
-        }
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-RestMethod -Uri $webHookUrl -Body ($payload | ConvertTo-Json -Depth 4) -Method Patch -ContentType 'application/json'
-    ]]
-    local pipe = io.popen('powershell -windowstyle Hidden -command -', 'w')
-    pipe:write(script)
-    pipe:close()
-end
-
 function webhookFields(whMsID,fields1,fields2,fields3)
     if not webhook_enable then return end
     local script = [[
@@ -222,9 +190,6 @@ function checkInventory(bot, index)
         for _, trash_item in pairs(trash) do
             if bot:getInventory():getItemCount(trash_item) > 0 then
                 bot.auto_geiger.enabled = false
-                if trash_webhook then
-                webHookEmbed(whMsData, "Trashes "..getInfo(bot:getInventory():getItem(trash_item).id).name)
-                end
                 sleep(4000)
                 bot:trash(trash_item, bot:getInventory():getItemCount(trash_item))
                 sleep(4000)
@@ -368,7 +333,6 @@ function Drop(item, index)
         if id == 6416 then star_fuel      = count end
         if id == 3196 then nuclear_fuel   = count end
 
-
     end
 
     function countValue()
@@ -397,7 +361,6 @@ function Drop(item, index)
     
     local total_value = math.floor( countValue() )
 
-    --print("Total Value : "..total_value)
 
     local fields1 = string.format("**%s : %s\n", rad_chem, radioact_chem)..string.format("%s : %s\n",greenC, green_crystal)..string.format("%s : %s\n",blueC, blue_crystal)..string.format("%s : %s\n",redC, red_crystal)..string.format("%s : %s\n",whiteC, white_crystal)..string.format("%s : %s\n",blackC, black_crystal)..string.format("%s : %s**\n", geigerC, geiger_charger)
     local fields2 = string.format("**%s : %s\n", redS, red_stuff)..string.format("%s : %s\n", purpleS, purple_stuff)..string.format("%s : %s\n", orangeS, orange_stuff)..string.format("%s : %s\n", blueS, blue_stuff)..string.format("%s : %s\n", greenS, green_stuff)..string.format("%s : %s\n", whiteS, white_stuff)..string.format("%s : %s\n", blackS, black_stuff)..string.format("%s : %s\n", starF, star_fuel)..string.format("%s : %s**\n", nuclearF, nuclear_fuel)
@@ -409,9 +372,6 @@ end
 
 
 function main()
-    --if script_id == 1 then
-      --  webHookEmbed("AUTO GEIGER", "running..")
-    --end
     if afk_on_main then
         getBot().auto_geiger.afk = true
     end
