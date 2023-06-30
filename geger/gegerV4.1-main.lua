@@ -52,7 +52,7 @@ function webhookFields(whMsID,fields1,fields2,fields3)
         [System.Collections.ArrayList]$embedArray = @()
         $color = Get-Random -Minimum 0 -Maximum 16777215
         $thumbnailObject = [PSCustomObject]@{
-            url = "https://ik.imagekit.io/izdevs/dc/Vanilla-1.9s-281px.gif?updatedAt=1687602728562"
+            url = "https://ik.imagekit.io/izdevs/dc/iz-banner.gif?updatedAt=1688130449418"
         }
         $crystalText= ']]..fields1..[['
         $stuffText = ']]..fields2..[['
@@ -73,7 +73,7 @@ function webhookFields(whMsID,fields1,fields2,fields3)
         }
         $embedObject = [PSCustomObject]@{
             color = $color
-            thumbnail = $thumbnailObject
+            image = $thumbnailObject
             footer = [PSCustomObject]@{
                 text = 'Last Update : ' + (Get-Date).ToString('HH:mm:ss') + "`nIzzDevs"
                 icon_url = "https://ik.imagekit.io/izdevs/izuye.png"
