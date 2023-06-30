@@ -181,7 +181,6 @@ function startGeiger(bot, index)
 end
 
 
-
 function checkInventory(bot, index)
 
     if bot.status ~= 1 then return end
@@ -209,15 +208,6 @@ function checkInventory(bot, index)
             sleep(4300)
         end
     end
-end
-
-function storeDatabase(rwrd, rwrdCnt)
-    local client = HttpClient.new()
-    local wordlName = getBot():getWorld().name
-    client.method = Method.post
-    client.url = "https://izz.biz.id/gt/data/geiger_data.php?botName="..tostring(getBot().name).."&reward="..tostring(rwrd).."&rewardCount="..tostring(rwrdCnt).."&worldName="..tostring(worldName).."&key="..izz_key
-    response = client:request()
-    print(response.body)
 end
 
 function Drop(item, index)
