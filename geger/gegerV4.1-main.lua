@@ -349,6 +349,15 @@ function Drop(item, index)
 end
 
 function main()
+
+    if getBot():getWorld().name ~= geiger_worlds[index]:upper() then
+        sleep(500)
+        getBot():warp(geiger_worlds[index])
+        sleep(warp_interval)
+    end
+
+    sleep(10000)
+
     if afk_on_main then
         getBot().auto_geiger.afk = true
     end
