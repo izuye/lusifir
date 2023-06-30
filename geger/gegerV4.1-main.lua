@@ -1,5 +1,5 @@
 --
-print("Script Geiger V4 Loaded")
+print("Script Geiger V4.1 Loaded")
 print("-- IzzDevs --")
 --==================================================================================================================================================================================================================
 --==================================================================================================================================================================================================================
@@ -94,17 +94,14 @@ end
 
 
 function getposx()
-
     return getBot():getWorld():getLocal().posx
 end
 
 function getposy()
-
     return getBot():getWorld():getLocal().posy
 end
 
 function getGeiger(bot, index)
-
     if not autoGet_geiger then return end
 
     if not bot:isInWorld() then
@@ -151,7 +148,6 @@ function getGeiger(bot, index)
 end
 
 function startGeiger(bot, index)
-
     if bot.status ~= 1 then return end
 
     if bot:getWorld().name ~= geiger_worlds[index]:upper() then
@@ -182,7 +178,6 @@ end
 
 
 function checkInventory(bot, index)
-
     if bot.status ~= 1 then return end
 
     if trash_enable then
@@ -211,8 +206,6 @@ function checkInventory(bot, index)
 end
 
 function Drop(item, index)
-
-
     if getBot():getWorld().name ~= storage_world[index]:match("(.+)|"):upper() then
         sleep(500)
         getBot():warp(storage_world[index])
@@ -277,7 +270,6 @@ function Drop(item, index)
 
     sleep(5000)
     getBot():drop(item, getBot():getInventory():getItemCount(item))
-
     sleep(4000)
 
     green_crystal  = 0
@@ -297,7 +289,6 @@ function Drop(item, index)
     white_stuff    = 0
     star_fuel      = 0
     nuclear_fuel   = 0
-
 
     for id, count in pairs(getBot():getWorld().growscan:getObjects()) do
 
@@ -348,15 +339,12 @@ function Drop(item, index)
     
     local total_value = math.floor( countValue() )
 
-
     local fields1 = string.format("**%s : %s\n", rad_chem, radioact_chem)..string.format("%s : %s\n",greenC, green_crystal)..string.format("%s : %s\n",blueC, blue_crystal)..string.format("%s : %s\n",redC, red_crystal)..string.format("%s : %s\n",whiteC, white_crystal)..string.format("%s : %s\n",blackC, black_crystal)..string.format("%s : %s**\n", geigerC, geiger_charger)
     local fields2 = string.format("**%s : %s\n", redS, red_stuff)..string.format("%s : %s\n", purpleS, purple_stuff)..string.format("%s : %s\n", orangeS, orange_stuff)..string.format("%s : %s\n", blueS, blue_stuff)..string.format("%s : %s\n", greenS, green_stuff)..string.format("%s : %s\n", whiteS, white_stuff)..string.format("%s : %s\n", blackS, black_stuff)..string.format("%s : %s\n", starF, star_fuel)..string.format("%s : %s**\n", nuclearF, nuclear_fuel)
     local fields3 = "**Total Value : [ "..total_value.." "..wls.." ]**\n\n**Uptime**  : "..SecondTT(os.difftime(os.time(), startT))
 
     webhookFields(whMsData, fields1, fields2, fields3)
-
 end
-
 
 function main()
     if afk_on_main then

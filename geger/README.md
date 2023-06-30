@@ -1,5 +1,9 @@
 # Update Changelogs
 
+### V4.1 Update
+
+- Better auto filter from items
+
 ### V4 Update
 
 - Adding auto filter from items
