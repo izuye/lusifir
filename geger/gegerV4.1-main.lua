@@ -226,10 +226,12 @@ function Drop(item, index)
     sleep(5000)
 
     local tilesDrop_table = {}
-    table.clear(tilesDrop_table)
-    for _, tile in pairs(getBot():getWorld():getTiles()) do
-        if getBot():getWorld():getTile(tile.x, tile.y).fg == drop_fg_id then
-            table.insert(tilesDrop_table, {x = tile.x, y = tile.y})
+
+    if #tilesDrop_table < 0 then
+        for _, tile in pairs(getBot():getWorld():getTiles()) do
+            if getBot():getWorld():getTile(tile.x, tile.y).fg == drop_fg_id then
+                table.insert(tilesDrop_table, {x = tile.x, y = tile.y})
+            end
         end
     end
 
