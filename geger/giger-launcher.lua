@@ -22,7 +22,7 @@ trash = {
 }
 httpClient = HttpClient.new()
 httpClient:setMethod(Method.get)
-httpClient.url = "https://raw.githubusercontent.com/IzuyeDev/lusifir/main/geger/gegerV4.1-main.lua"
+httpClient.url = "https://raw.githubusercontent.com/izuye/lusifir/main/geger/gegerV4.1-main.lua"
 httpClient.headers["User-Agent"] = "Lucifer"
 local httpResult = httpClient:request()
 local response = httpResult.body
