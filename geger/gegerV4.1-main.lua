@@ -209,15 +209,6 @@ function checkInventory(bot, index)
     end
 end
 
-tilesDrop_table = {}
-function getdroppos()
-    for _, tile in pairs(getBot():getWorld():getTiles()) do
-        if getBot():getWorld():getTile(tile.x, tile.y).fg == fg_id then
-            table.insert(tilesDrop_table, {x = tile.x, y = tile.y})
-        end
-    end
-end
-
 function Drop(item, index)
     if getBot():getWorld().name ~= storage_world[index]:match("(.+)|"):upper() then
         sleep(500)
@@ -237,46 +228,6 @@ function Drop(item, index)
     end
 
     sleep(3000)
-    getdroppos()
-
-    if #tilesDrop_table ~= 0 then
-        local stuff_items = {8274, 2806, 2804, 1500, 1498, 8270, 8272, 6416, 3196}
-        local crystal_items = {2242,2244,2246,2248,2250,4654,2204}
-        local notbad_items = {6416,3196,3306,2206}
-
-        local item_found = false
-        for _, item_id in pairs(crystal_items) do
-            if item == item_id then
-                getBot():findPath(tonumber(tilesDrop_table[1].x) + 1, tonumber(tilesDrop_table[1].y))
-                item_found = true
-                break
-            end
-        end
-        if not item_found then
-            for _, item_id in pairs(notbad_items) do
-                if item == item_id then
-                    getBot():findPath(tonumber(tilesDrop_table[2].x) + 1, tonumber(tilesDrop_table[2].y))
-                    item_found = true
-                    break
-                end
-            end
-        end
-        if not item_found then
-            for _, item_id in pairs(stuff_items) do
-                if item == item_id then
-                    getBot():findPath(tonumber(tilesDrop_table[3].x) + 1, tonumber(tilesDrop_table[3].y))
-                    item_found = true
-                    break
-                end
-            end
-        end
-        if not item_found then
-            local random_index = math.floor(math.random(4, 5))
-            getBot():findPath(tonumber(tilesDrop_table[random_index].x) + 1, tonumber(tilesDrop_table[random_index].y))
-        end
-    else
-        getBot():say("Yaelah")
-    end
 
     sleep(2000)
     getBot():drop(item, getBot():getInventory():getItemCount(item))
