@@ -3,7 +3,7 @@
 --==================================================================================================================================================================================================================
 --==================================================================================================================================================================================================================
 geiger_items = { --don't change
-    6416, 3196, 1500, 1498, 2806, 2804, 8270, 8272, 8274, 4676, 4678, 4680, 4682, 4652, 4650, 4648, 4646, 11186, 10086, 10084, 2206, 2244, 2246, 2242, 2248, 2250, 3792, 3306, 4654, 3204,
+    6416, 3196, 1500, 1498, 2806, 2804, 8270, 8272, 8274, 4676, 4678, 4680, 4682, 4652, 4650, 4648, 4646, 11186, 10086, 10084, 2206, 2244, 2246, 2242, 2248, 2250, 3792, 3306, 4654, 3204, 12502
 }
 
 -- EMOJIS
@@ -15,16 +15,23 @@ blueC    = "<:bluec:1098948697917767772>"
 geigerC  = "<:geigerc:1098948635565232230>" --geiger charger
 arrow    = "<:ar:1087310906817527818>"
 rad_chem = "<:rad:1109044027107586118>"
-blackS	 = "<:blacks:1119468621144531025>"
-blueS 	 = "<:blues:1119468623501725746>"
-greenS	 = "<:greens:1119468627658280971>"
-orangeS	 = "<:oranges:1119468637313564794>"
-purpleS	 = "<:purples:1119468639305863249>"
-redS 	 = "<:reds:1119468642669699132>"
-whiteS 	 = "<:whites:1119468648050987122>"
-starF	 = "<:starf:1119468644250943619>"
-nuclearF = "<:nuclearf:1119468633714864128>"
 wls      = "<:wl:994245201826697226>"
+blackS = ' <:blackS:1124574156512567377>'
+blueS = ' <:blueS:1124573922881450047>'
+dSign = ' <:dSign:1124574483353718914>'
+dbatt = ' <:dbatt:1124574301920694424>'
+fAnimH = ' <:fAnimH:1124574442056593458>'
+glowS = ' <:glowS:1124574107493740595>'
+greenS = ' <:greenS:1124573870934982686>'
+mAnimH = ' <:mAnimH:1124574406459531265>'
+nerdH = ' <:nerdH:1124574224116351066>'
+nuclearF = ' <:nuclF:1124573499344814200>'
+orangeS = ' <:orangeS:1124573751518969907>'
+purpleS = ' <:purpleS:1124573661484036186>'
+redS = ' <:redS:1124574030037524560>'
+starF = ' <:starF:1124573594488406048>'
+whiteS = ' <:whiteS:1124573983141023804>'
+
 --
 OnlineMoji  = "<:online:858271078890864690>"
 OfflineMoji = "<:offline:858271448493981696>"
@@ -49,8 +56,8 @@ function webhookFields(whMsID,fields1,fields2,fields3)
         $webHookUrl = "]]..whURL.."/messages/"..whMsID..[["
         [System.Collections.ArrayList]$embedArray = @()
         $color = Get-Random -Minimum 0 -Maximum 16777215
-        $thumbnailObject = [PSCustomObject]@{
-            url = "https://ik.imagekit.io/izdevs/dc/iz-banner.gif?updatedAt=1688130449418"
+        $image = [PSCustomObject]@{
+            url = "https://ik.imagekit.io/izdevs/dc/iz-banner-small.gif?updatedAt=1688182955003"
         }
         $crystalText= ']]..fields1..[['
         $stuffText = ']]..fields2..[['
@@ -61,7 +68,7 @@ function webhookFields(whMsID,fields1,fields2,fields3)
             inline = $true
         }
         $stuffObject = [PSCustomObject]@{
-            name = "Stuff"
+            name = "Other"
             value = ($stuffText)
             inline = $true
         }
@@ -71,7 +78,7 @@ function webhookFields(whMsID,fields1,fields2,fields3)
         }
         $embedObject = [PSCustomObject]@{
             color = $color
-            image = $thumbnailObject
+            image = $image
             footer = [PSCustomObject]@{
                 text = 'Last Update : ' + (Get-Date).ToString('HH:mm:ss') + "`nIzzDevs"
                 icon_url = "https://ik.imagekit.io/izdevs/izuye.png"
@@ -197,8 +204,16 @@ function checkInventory(bot, index)
             getBot().auto_collect = false
             sleep(500)
             Drop(item, index)
-            bot:findPath(drop_location_X, drop_location_Y)
             sleep(4300)
+        end
+    end
+end
+
+tilesDrop_table = {}
+function getdroppos()
+    for _, tile in pairs(getBot():getWorld():getTiles()) do
+        if getBot():getWorld():getTile(tile.x, tile.y).fg == fg_id then
+            table.insert(tilesDrop_table, {x = tile.x, y = tile.y})
         end
     end
 end
@@ -221,54 +236,49 @@ function Drop(item, index)
         sleep(warp_interval)
     end
 
-    sleep(5000)
+    sleep(3000)
+    getdroppos()
 
-    local tilesDrop_table = {}
+    if #tilesDrop_table ~= 0 then
+        local stuff_items = {8274, 2806, 2804, 1500, 1498, 8270, 8272, 6416, 3196}
+        local crystal_items = {2242,2244,2246,2248,2250,4654,2204}
+        local notbad_items = {6416,3196,3306,2206}
 
-    if #tilesDrop_table =< 0 then
-        for _, tile in pairs(getBot():getWorld():getTiles()) do
-            if getBot():getWorld():getTile(tile.x, tile.y).fg == drop_fg_id then
-                table.insert(tilesDrop_table, {x = tile.x, y = tile.y})
-            end
-        end
-    end
-
-    local stuff_items = {8274, 2806, 2804, 1500, 1498, 8270, 8272, 6416, 3196}
-    local crystal_items = {2242,2244,2246,2248,2250,4654,2204}
-    local notbad_items = {6416,3196,3306,2206}
-
-    local item_found = false
-    for _, item_id in pairs(crystal_items) do
-        if item == item_id then
-            getBot():findPath(tilesDrop_table[1].x + 1, tilesDrop_table[1].y)
-            item_found = true
-            break
-        end
-    end
-    if not item_found then
-        for _, item_id in pairs(notbad_items) do
+        local item_found = false
+        for _, item_id in pairs(crystal_items) do
             if item == item_id then
-                getBot():findPath(tilesDrop_table[2].x + 1, tilesDrop_table[2].y)
+                getBot():findPath(tonumber(tilesDrop_table[1].x) + 1, tonumber(tilesDrop_table[1].y))
                 item_found = true
                 break
             end
         end
-    end
-    if not item_found then
-        for _, item_id in pairs(stuff_items) do
-            if item == item_id then
-                getBot():findPath(tilesDrop_table[3].x + 1, tilesDrop_table[3].y)
-                item_found = true
-                break
+        if not item_found then
+            for _, item_id in pairs(notbad_items) do
+                if item == item_id then
+                    getBot():findPath(tonumber(tilesDrop_table[2].x) + 1, tonumber(tilesDrop_table[2].y))
+                    item_found = true
+                    break
+                end
             end
         end
-    end
-    if not item_found then
-        local random_index = math.floor(math.random(4, 5))
-        getBot():findPath(tilesDrop_table[random_index].x + 1, tilesDrop_table[random_index].y)
+        if not item_found then
+            for _, item_id in pairs(stuff_items) do
+                if item == item_id then
+                    getBot():findPath(tonumber(tilesDrop_table[3].x) + 1, tonumber(tilesDrop_table[3].y))
+                    item_found = true
+                    break
+                end
+            end
+        end
+        if not item_found then
+            local random_index = math.floor(math.random(4, 5))
+            getBot():findPath(tonumber(tilesDrop_table[random_index].x) + 1, tonumber(tilesDrop_table[random_index].y))
+        end
+    else
+        getBot():say("Yaelah")
     end
 
-    sleep(5000)
+    sleep(2000)
     getBot():drop(item, getBot():getInventory():getItemCount(item))
     sleep(4000)
 
@@ -289,6 +299,13 @@ function Drop(item, index)
     white_stuff    = 0
     star_fuel      = 0
     nuclear_fuel   = 0
+    -- 
+    mAnimHair      = 0
+    fAnimHair      = 0
+    glowStick      = 0
+    digiSign       = 0
+    nerdHair       = 0
+    dbattery       = 0
 
     for id, count in pairs(getBot():getWorld().growscan:getObjects()) do
 
@@ -301,16 +318,22 @@ function Drop(item, index)
         if id == 2204 then geiger_counter = count end
         if id == 2206 then radioact_chem  = count end
         --
-        if id == 8274 then black_stuff    = count end
-        if id == 2806 then blue_stuff     = count end
-        if id == 2804 then green_stuff    = count end
-        if id == 1500 then orange_stuff   = count end
-        if id == 1498 then purple_stuff   = count end
-        if id == 8270 then red_stuff      = count end
-        if id == 8272 then white_stuff    = count end
-        if id == 6416 then star_fuel      = count end
-        if id == 3196 then nuclear_fuel   = count end
-
+        if id == 10084 then mAnimHair     = count end
+        if id == 10086 then fAnimHair     = count end
+        if id == 3792 then glowStick     = count end
+        if id == 11186 then digiSign     = count end
+        if id == 12502 then nerdHair     = count end
+        if id == 3306 then dbattery     = count end
+        -- 
+        -- if id == 8274 then black_stuff    = count end
+        -- if id == 2806 then blue_stuff     = count end
+        -- if id == 2804 then green_stuff    = count end
+        -- if id == 1500 then orange_stuff   = count end
+        -- if id == 1498 then purple_stuff   = count end
+        -- if id == 8270 then red_stuff      = count end
+        -- if id == 8272 then white_stuff    = count end
+        -- if id == 6416 then star_fuel      = count end
+        -- if id == 3196 then nuclear_fuel   = count end
     end
 
     function countValue()
@@ -340,10 +363,15 @@ function Drop(item, index)
     local total_value = math.floor( countValue() )
 
     local fields1 = string.format("**%s : %s\n", rad_chem, radioact_chem)..string.format("%s : %s\n",greenC, green_crystal)..string.format("%s : %s\n",blueC, blue_crystal)..string.format("%s : %s\n",redC, red_crystal)..string.format("%s : %s\n",whiteC, white_crystal)..string.format("%s : %s\n",blackC, black_crystal)..string.format("%s : %s**\n", geigerC, geiger_charger)
-    local fields2 = string.format("**%s : %s\n", redS, red_stuff)..string.format("%s : %s\n", purpleS, purple_stuff)..string.format("%s : %s\n", orangeS, orange_stuff)..string.format("%s : %s\n", blueS, blue_stuff)..string.format("%s : %s\n", greenS, green_stuff)..string.format("%s : %s\n", whiteS, white_stuff)..string.format("%s : %s\n", blackS, black_stuff)..string.format("%s : %s\n", starF, star_fuel)..string.format("%s : %s**\n", nuclearF, nuclear_fuel)
+
+    local fields2 = string.format("**%s : %s\n", dbatt, dbattery)..string.format("%s : %s\n", nerdH, nerdHair)..string.format("%s : %s\n", mAnimH, mAnimHair)..string.format("%s : %s\n", fAnimH, fAnimHair)..string.format("%s : %s\n", dSign, digiSign)..string.format("%s : %s\n", whiteS, white_stuff)
+
+    -- local fields2 = string.format("**%s : %s\n", redS, red_stuff)..string.format("%s : %s\n", purpleS, purple_stuff)..string.format("%s : %s\n", orangeS, orange_stuff)..string.format("%s : %s\n", blueS, blue_stuff)..string.format("%s : %s\n", greenS, green_stuff)..string.format("%s : %s\n", whiteS, white_stuff)..string.format("%s : %s\n", blackS, black_stuff)..string.format("%s : %s\n", starF, star_fuel)..string.format("%s : %s**\n", nuclearF, nuclear_fuel)
+
     local fields3 = "**Total Value : [ "..total_value.." "..wls.." ]**\n\n**Uptime**  : "..SecondTT(os.difftime(os.time(), startT))
 
     webhookFields(whMsData, fields1, fields2, fields3)
+    tilesDrop_table = {}
 end
 
 function main()
